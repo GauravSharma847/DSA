@@ -9,6 +9,7 @@ public class 4countDigits {
           num = num / 10;
           count++;
         }
+        
         System.out.println(count);
     }
 }    

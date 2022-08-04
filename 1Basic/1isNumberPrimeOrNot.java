@@ -4,7 +4,7 @@ public class isNumberPrimeOrNot {
         Scanner scn = new Scanner(System.in);
         int t = scn.nextInt();
       
-
+// jhgdbsjhgb
         for(int i = 0 ; i < t ; i++ ){
             int n = scn.nextInt();
             

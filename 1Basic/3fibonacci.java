@@ -1,4 +1,3 @@
-
 import java.util.*;
 
 public class 3fibonacci {
@@ -13,7 +12,6 @@ public class 3fibonacci {
     int i = 1;
     while(i <= n){
       System.out.println(first);
-      
       int third = first + second;
       first = second;
       second = third;
