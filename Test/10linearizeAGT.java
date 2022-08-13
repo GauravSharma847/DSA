@@ -1,7 +1,12 @@
+public class 10linearizeAGT {
+    
+}
+
+
 import java.io.*;
 import java.util.*;
 
-public class levelOrderLinewiseZigZag {
+public class Main {
   private static class Node {
     int data;
     ArrayList<Node> children = new ArrayList<>();
@@ -79,10 +84,10 @@ public class levelOrderLinewiseZigZag {
     return h;
   }
 
-  public static void traversals(Node node){
+  public static void traversals(Node node) {
     System.out.println("Node Pre " + node.data);
 
-    for(Node child: node.children){
+    for (Node child : node.children) {
       System.out.println("Edge Pre " + node.data + "--" + child.data);
       traversals(child);
       System.out.println("Edge Post " + node.data + "--" + child.data);
@@ -91,37 +96,76 @@ public class levelOrderLinewiseZigZag {
     System.out.println("Node Post " + node.data);
   }
 
-  public static void levelOrderLinewiseZZ(Node node){
-    // write your code here
-    Stack<Node> ms = new Stack<>();
-    ms.add(node);
-    Stack<Node> cs = new Stack<>();
-    int level = 1;
-    while(ms.size() > 0){
-      node = ms.pop();
+  public static void levelOrderLinewiseZZ(Node node) {
+    Stack<Node> stack = new Stack<>();
+    stack.add(node);
+
+    Stack<Node> cstack = new Stack<>();
+    int level = 0;
+
+    while (stack.size() > 0) {
+      node = stack.pop();
       System.out.print(node.data + " ");
 
-      if(level % 2 == 1){
-        for(int i = 0 ; i < node.children.size() ; i++){
+      if (level % 2 == 0) {
+        for (int i = 0; i < node.children.size(); i++) {
           Node child = node.children.get(i);
-          cs.push(child);
+          cstack.push(child);
         }
-      }else{
-        for(int i = node.children.size() - 1 ; i >= 0 ; i--){
+      } else {
+        for (int i = node.children.size() - 1; i >= 0; i--) {
           Node child = node.children.get(i);
-          cs.push(child);
+          cstack.push(child);
         }
       }
-      if(ms.size() == 0){
-        ms = cs;
-        cs = new Stack<>();
+
+      if (stack.size() == 0) {
+        stack = cstack;
+        cstack = new Stack<>();
         level++;
         System.out.println();
       }
     }
   }
- 
 
+  public static void mirror(Node node) {
+    for (Node child : node.children) {
+      mirror(child);
+    }
+    Collections.reverse(node.children);
+  }
+
+  public static void removeLeaves(Node node) {
+    for (int i = node.children.size() - 1; i >= 0; i--) {
+      Node child = node.children.get(i);
+      if (child.children.size() == 0) {
+        node.children.remove(i);
+      }
+    }
+
+    for(Node child: node.children){
+      removeLeaves(child);
+    }
+  }
+
+  public static void linearize(Node node){
+    for(Node child : node.children){
+        linearize(child);
+    }
+
+    while(node.children.size() > 0){
+        Node lc = node.children.remove(node.children.size() - 1);
+        Node sl = node.children.get(node.children.size() -1 );
+        Node slt = getTail(sl);
+        slt.children.add(lc);
+    }
+  }
+  private static Node getTail(Node node){
+    while(Node.children.size() ==1){
+        node = node.children.get(0); 
+    }
+    return node;
+  }
   public static void main(String[] args) throws Exception {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     int n = Integer.parseInt(br.readLine());
@@ -132,9 +176,8 @@ public class levelOrderLinewiseZigZag {
     }
 
     Node root = construct(arr);
-    // levelOrderLinewiseZZ_Aproach1(root);
-    levelOrderLinewiseZZ(root);
+    linearize(root);
+    display(root);
   }
 
 }
-
