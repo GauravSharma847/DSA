@@ -46,8 +46,23 @@ public class solution {
 
   static Node predecessor;
   static Node successor;
+  static int state ;
   public static void predecessorAndSuccessor(Node node, int data) {
     // write your code here
+    if(state == 0){
+      if(node.data == data){
+        state = 1;
+      }else {
+        predecessor = node;
+      }
+    }else if(state == 1){
+      successor = node;
+      state = 2;
+    }
+    for(Node child : node.children){
+      predecessorAndSuccessor(child, data);
+    }
+
   }
 
   public static void main(String[] args) throws Exception {
@@ -64,6 +79,7 @@ public class solution {
     Node root = construct(arr);
     predecessor = null;
     successor = null;
+    state = 0;
     predecessorAndSuccessor(root, data);
     if(predecessor == null){
       System.out.println("Predecessor = Not found");
